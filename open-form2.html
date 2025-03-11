@@ -12,22 +12,39 @@
     <p>もし自動で開かない場合は、<a id="googleFormLink" href="#">こちらをクリック</a></p>
 
     <script>
-        function openGoogleForm() {
-            // ローカルストレージから ID を取得
+        /**
+         * タブレットのローカルストレージ（localStorage）から ID を取得する関数
+         * - localStorage は「このタブレット内のブラウザ」に保存されているデータ
+         * - クラウド上のHTMLファイルを開いても、このデバイスの localStorage からIDを取得できる
+         */
+        function getTabletID() {
             var tabletID = null;
 
             try {
+                // タブレットのローカルストレージから "tabletID" を取得
                 tabletID = localStorage.getItem("tabletID");
             } catch (e) {
+                // もし localStorage へのアクセスが制限されていた場合、エラーメッセージを表示
                 console.error("LocalStorageへのアクセスがブロックされました", e);
             }
 
+            return tabletID;
+        }
+
+        /**
+         * Googleフォームを開く関数
+         * - 取得したタブレットIDを GoogleフォームのURLに埋め込んで開く
+         */
+        function openGoogleForm() {
+            var tabletID = getTabletID(); // タブレットの localStorage から ID を取得
+
+            // ID が取得できなかった場合の処理
             if (!tabletID) {
                 alert("タブレットIDが設定されていません。まずIDを設定してください。");
                 return;
             }
 
-            // GoogleフォームのプリフィルURL
+            // GoogleフォームのプリフィルURL（IDが自動入力される仕組み）
             var formBaseURL = "https://docs.google.com/forms/d/e/1FAIpQLSc2R-dhxRmKi2oQ4Mgzai410gPEXxvbyx4-sPGE4b0YPCi8TQ/viewform?usp=pp_url";
             var fullURL = formBaseURL + "&entry.1973846765=" + encodeURIComponent(tabletID);
 
@@ -35,22 +52,22 @@
             window.location.href = fullURL;
         }
 
-        // ページ読み込み時にタブレットIDを表示
+        /**
+         * ページ読み込み時に、現在のタブレットIDを表示する関数
+         */
         function displayTabletID() {
-            var tabletID = null;
-            
-            try {
-                tabletID = localStorage.getItem("tabletID");
-            } catch (e) {
-                console.error("LocalStorageの読み取りに失敗しました", e);
-            }
-
+            var tabletID = getTabletID(); // タブレットの localStorage から ID を取得
             document.getElementById("userID").innerText = tabletID ? tabletID : "未設定";
         }
 
+        /**
+         * ページ読み込み時の処理
+         * - タブレットの ID を表示
+         * - Googleフォームを開く
+         */
         window.onload = function() {
-            displayTabletID();
-            openGoogleForm();
+            displayTabletID();  // タブレットIDを画面に表示
+            openGoogleForm();   // Googleフォームを自動で開く
         };
     </script>
 
