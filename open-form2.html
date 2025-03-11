@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Googleフォームにリダイレクト中...</title>
+</head>
+<body>
+
+    <h2>Googleフォームを開いています...</h2>
+    <p>このタブレットのID: <span id="userID">未設定</span></p>
+    <p>もし自動で開かない場合は、<a id="googleFormLink" href="#">こちらをクリック</a></p>
+
+    <script>
+        function openGoogleForm() {
+            // ローカルストレージから ID を取得
+            var tabletID = null;
+
+            try {
+                tabletID = localStorage.getItem("tabletID");
+            } catch (e) {
+                console.error("LocalStorageへのアクセスがブロックされました", e);
+            }
+
+            if (!tabletID) {
+                alert("タブレットIDが設定されていません。まずIDを設定してください。");
+                return;
+            }
+
+            // GoogleフォームのプリフィルURL
+            var formBaseURL = "https://docs.google.com/forms/d/e/1FAIpQLSc2R-dhxRmKi2oQ4Mgzai410gPEXxvbyx4-sPGE4b0YPCi8TQ/viewform?usp=pp_url";
+            var fullURL = formBaseURL + "&entry.1973846765=" + encodeURIComponent(tabletID);
+
+            // Googleフォームを新しいタブで開く
+            window.location.href = fullURL;
+        }
+
+        // ページ読み込み時にタブレットIDを表示
+        function displayTabletID() {
+            var tabletID = null;
+            
+            try {
+                tabletID = localStorage.getItem("tabletID");
+            } catch (e) {
+                console.error("LocalStorageの読み取りに失敗しました", e);
+            }
+
+            document.getElementById("userID").innerText = tabletID ? tabletID : "未設定";
+        }
+
+        window.onload = function() {
+            displayTabletID();
+            openGoogleForm();
+        };
+    </script>
+
+</body>
+</html>
