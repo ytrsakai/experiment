@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Googleフォームを開く</title>
+</head>
+<body>
+
+    <h2>Googleフォームを開く</h2>
+    <p>このタブレットのID: <span id="userID">未設定</span></p>
+    <button onclick="openGoogleForm()">Googleフォームを開く</button>
+
+    <script>
+        function openGoogleForm() {
+            var tabletID = localStorage.getItem("tabletID");
+            if (!tabletID) {
+                alert("タブレットIDが設定されていません。まずIDを設定してください。");
+                return;
+            }
+
+            // GoogleフォームのプリフィルURL
+            var formBaseURL = "https://docs.google.com/forms/d/e/1FAIpQLSc2R-dhxRmKi2oQ4Mgzai410gPEXxvbyx4-sPGE4b0YPCi8TQ/viewform?usp=pp_url";
+            var fullURL = formBaseURL + "&entry.1973846765=" + encodeURIComponent(tabletID);
+
+            // Googleフォームを新しいタブで開く
+            window.open(fullURL, "_blank");
+        }
+
+        // ページ読み込み時にタブレットIDを表示
+        function displayTabletID() {
+            var tabletID = localStorage.getItem("tabletID");
+            document.getElementById("userID").innerText = tabletID ? tabletID : "未設定";
+        }
+
+        window.onload = displayTabletID;
+    </script>
+
+</body>
+</html>
+
