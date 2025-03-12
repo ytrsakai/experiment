@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>タブを閉じる</title>
+</head>
+<body>
+    <h2>このタブを閉じます...</h2>
+    <p>タブが自動で閉じない場合は、以下のボタンをクリックしてください。</p>
+    <button onclick="window.close()">タブを閉じる</button>
+
+    <script>
+        setTimeout(function() {
+            window.close();
+        }, 3000); // 3秒後にタブを自動で閉じる
+    </script>
+</body>
+</html>
