@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>タブレットのID設定</title>
+</head>
+<body>
+
+    <h2>タブレットのIDを設定</h2>
+    <label for="tabletID">タブレットID:</label>
+    <input type="text" id="tabletID" placeholder="例: 3">
+    <button onclick="saveTabletID()">保存</button>
+
+    <h3>現在のタブレットID:</h3>
+    <p id="currentID">未設定</p>
+
+    <script>
+        function saveTabletID() {
+            var tabletID = document.getElementById("tabletID").value;
+            if (tabletID) {
+                localStorage.setItem("tabletID", tabletID);
+                alert("タブレットIDが保存されました: " + tabletID);
+                document.getElementById("currentID").innerText = tabletID;
+            }
+        }
+
+        function loadTabletID() {
+            var tabletID = localStorage.getItem("tabletID");
+            if (tabletID) {
+                document.getElementById("currentID").innerText = tabletID;
+            } else {
+                document.getElementById("currentID").innerText = "未設定";
+            }
+        }
+
+        window.onload = loadTabletID;
+    </script>
+
+</body>
+</html>
