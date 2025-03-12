@@ -6,12 +6,14 @@
     <title>タブを閉じます...</title>
     <script>
         window.onload = function() {
-            window.close(); // すぐにタブを閉じる
+            setTimeout(function() {
+                window.close(); // 1秒後にタブを閉じる
+            }, 1000); // 1000ミリ秒 = 1秒
         };
     </script>
 </head>
 <body>
-    <h2>このタブを閉じています...</h2>
+    <h2>このタブを閉じます...</h2>
     <p>タブが自動で閉じない場合は、以下のボタンを押してください。</p>
     <button onclick="window.close()">タブを閉じる</button>
 </body>
