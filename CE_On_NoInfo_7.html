@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Googleフォームにリダイレクト中...</title>
+</head>
+<body>
+
+    <h2>Googleフォームを開いています...</h2>
+    <p>このタブレットのID: <span id="userID">未設定</span></p>
+    <p>もし自動で開かない場合は、<a id="googleFormLink" href="#">こちらをクリック</a></p>
+
+    <script>
+        /**
+         * タブレットのローカルストレージ（localStorage）から ID を取得する関数
+         * - localStorage は「このタブレット内のブラウザ」に保存されているデータ
+         * - クラウド上のHTMLファイルを開いても、このデバイスの localStorage からIDを取得できる
+         */
+        function getTabletID() {
+            var tabletID = null;
+
+            try {
+                // タブレットのローカルストレージから "tabletID" を取得
+                tabletID = localStorage.getItem("tabletID");
+            } catch (e) {
+                // もし localStorage へのアクセスが制限されていた場合、エラーメッセージを表示
+                console.error("LocalStorageへのアクセスがブロックされました", e);
+            }
+
+            return tabletID;
+        }
+
+        /**
+         * Googleフォームを開く関数
+         * - 取得したタブレットIDを GoogleフォームのURLに埋め込んで開く
+         */
+        function openGoogleForm() {
+            var tabletID = getTabletID(); // タブレットの localStorage から ID を取得
+
+            // ID が取得できなかった場合の処理
+            if (!tabletID) {
+                alert("タブレットIDが設定されていません。まずIDを設定してください。");
+                return;
+            }
+
+            // GoogleフォームのプリフィルURL（IDが自動入力される仕組み）
+
+            var formBaseURL = "https://docs.google.com/forms/d/e/1FAIpQLSfHh31NiDCYssldYO6MSZuyFbFAGsJ-ZHuIfj7Wb6zxElDNGg/viewform?usp=pp_url";
+            var fullURL = formBaseURL + "&entry.529921458=" + encodeURIComponent(tabletID);
+
+            // Googleフォームを新しいタブで開く
+            window.location.href = fullURL;
+        }
+
+        /**
+         * ページ読み込み時に、現在のタブレットIDを表示する関数
+         */
+        function displayTabletID() {
+            var tabletID = getTabletID(); // タブレットの localStorage から ID を取得
+            document.getElementById("userID").innerText = tabletID ? tabletID : "未設定";
+        }
+
+        /**
+         * ページ読み込み時の処理
+         * - タブレットの ID を表示
+         * - Googleフォームを開く
+         */
+        window.onload = function() {
+            displayTabletID();  // タブレットIDを画面に表示
+            openGoogleForm();   // Googleフォームを自動で開く
+        };
+    </script>
+
+</body>
+</html>
